@@ -16,8 +16,8 @@ export class AppComponent {
       icon: 'home'
     },
     {
-      title: 'List',
-      url: '/list',
+      title: 'Todo',
+      url: '/todo',
       icon: 'list'
     }
   ];

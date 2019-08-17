@@ -1,0 +1,4 @@
+type TodoItem {
+  id: ID! @id
+  title: String!
+}

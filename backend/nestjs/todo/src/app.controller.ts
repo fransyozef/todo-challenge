@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { prisma } from 'generated/prisma-client';
+import { prisma } from './__generated/prisma-client';
 
 import { AppService } from './app.service';
 
@@ -19,7 +19,7 @@ export class AppController {
       title : 'test',
     });
     // tslint:disable-next-line:no-console
-    console.log(`Created a new todo item: `, newTodoItem);
+    // console.log(`Created a new todo item: `, newTodoItem);
 
     return newTodoItem;
   }

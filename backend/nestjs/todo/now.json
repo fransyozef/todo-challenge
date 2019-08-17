@@ -3,7 +3,7 @@
     "name": "todo",
     "builds": [
       {
-        "src": "dist/src/main.js",
+        "src": "dist/main.js",
         "use": "@now/node"
       }
     ],
@@ -12,5 +12,13 @@
         "src": "/(.*)",
         "dest": "dist/main.js"
       }
-    ]
+    ],
+    "build": {
+      "env": {
+        "PRISMA_ENDPOINT": "@prisma_endpoint"
+      }
+    },
+    "env": {
+      "PRISMA_ENDPOINT": "@prisma_endpoint"
+    }
   }

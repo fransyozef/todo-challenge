@@ -52,6 +52,7 @@ type Subscription {
 type TodoItem {
   id: ID!
   title: String!
+  completed: Boolean
 }
 
 type TodoItemConnection {
@@ -63,6 +64,7 @@ type TodoItemConnection {
 input TodoItemCreateInput {
   id: ID
   title: String!
+  completed: Boolean
 }
 
 type TodoItemEdge {
@@ -75,11 +77,14 @@ enum TodoItemOrderByInput {
   id_DESC
   title_ASC
   title_DESC
+  completed_ASC
+  completed_DESC
 }
 
 type TodoItemPreviousValues {
   id: ID!
   title: String!
+  completed: Boolean
 }
 
 type TodoItemSubscriptionPayload {
@@ -102,10 +107,12 @@ input TodoItemSubscriptionWhereInput {
 
 input TodoItemUpdateInput {
   title: String
+  completed: Boolean
 }
 
 input TodoItemUpdateManyMutationInput {
   title: String
+  completed: Boolean
 }
 
 input TodoItemWhereInput {
@@ -137,6 +144,8 @@ input TodoItemWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  completed: Boolean
+  completed_not: Boolean
   AND: [TodoItemWhereInput!]
   OR: [TodoItemWhereInput!]
   NOT: [TodoItemWhereInput!]

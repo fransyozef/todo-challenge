@@ -1,4 +1,5 @@
 type TodoItem {
   id: ID! @id
   title: String!
+  completed: Boolean @default(value: false)
 }

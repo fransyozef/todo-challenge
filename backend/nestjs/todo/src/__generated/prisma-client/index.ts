@@ -105,21 +105,21 @@ export type TodoItemOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "title_ASC"
-  | "title_DESC";
+  | "title_DESC"
+  | "completed_ASC"
+  | "completed_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export interface TodoItemCreateInput {
   id?: Maybe<ID_Input>;
   title: String;
+  completed?: Maybe<Boolean>;
 }
 
 export interface TodoItemUpdateInput {
   title?: Maybe<String>;
-}
-
-export interface TodoItemUpdateManyMutationInput {
-  title?: Maybe<String>;
+  completed?: Maybe<Boolean>;
 }
 
 export interface TodoItemWhereInput {
@@ -151,9 +151,16 @@ export interface TodoItemWhereInput {
   title_not_starts_with?: Maybe<String>;
   title_ends_with?: Maybe<String>;
   title_not_ends_with?: Maybe<String>;
+  completed?: Maybe<Boolean>;
+  completed_not?: Maybe<Boolean>;
   AND?: Maybe<TodoItemWhereInput[] | TodoItemWhereInput>;
   OR?: Maybe<TodoItemWhereInput[] | TodoItemWhereInput>;
   NOT?: Maybe<TodoItemWhereInput[] | TodoItemWhereInput>;
+}
+
+export interface TodoItemUpdateManyMutationInput {
+  title?: Maybe<String>;
+  completed?: Maybe<Boolean>;
 }
 
 export interface TodoItemSubscriptionWhereInput {
@@ -214,6 +221,7 @@ export interface BatchPayloadSubscription
 export interface TodoItemPreviousValues {
   id: ID_Output;
   title: String;
+  completed?: Boolean;
 }
 
 export interface TodoItemPreviousValuesPromise
@@ -221,6 +229,7 @@ export interface TodoItemPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
+  completed: () => Promise<Boolean>;
 }
 
 export interface TodoItemPreviousValuesSubscription
@@ -228,6 +237,7 @@ export interface TodoItemPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
+  completed: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface TodoItemEdge {
@@ -277,11 +287,13 @@ export interface TodoItemSubscriptionPayloadSubscription
 export interface TodoItem {
   id: ID_Output;
   title: String;
+  completed?: Boolean;
 }
 
 export interface TodoItemPromise extends Promise<TodoItem>, Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
+  completed: () => Promise<Boolean>;
 }
 
 export interface TodoItemSubscription
@@ -289,6 +301,7 @@ export interface TodoItemSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
+  completed: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface TodoItemNullablePromise
@@ -296,6 +309,7 @@ export interface TodoItemNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
+  completed: () => Promise<Boolean>;
 }
 
 export interface TodoItemConnection {
@@ -356,14 +370,14 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
-
-/*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
 
 /**
  * Model Metadata

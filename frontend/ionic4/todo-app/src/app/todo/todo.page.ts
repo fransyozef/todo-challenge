@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, Subject,throwError, of , BehaviorSubject} from 'rxjs';
+import { TodoService } from './_services/todo.service';
+import { TodoItemModel } from './_models/todo-item.interface';
 
 @Component({
   selector: 'app-todo',
@@ -7,9 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TodoPage implements OnInit {
 
-  constructor() { }
+  items$: BehaviorSubject<TodoItemModel[]>;
+
+  constructor(
+    private todoService: TodoService,
+  ) { }
 
   ngOnInit() {
+    this.items$  = this.todoService.items$;
   }
 
 }

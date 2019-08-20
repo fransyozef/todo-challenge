@@ -28,7 +28,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     {
                         id: this.makeid(),
                         title: 'item 2',
-                        completed: false
+                        completed: true
                     },
                     {
                         id: this.makeid(),

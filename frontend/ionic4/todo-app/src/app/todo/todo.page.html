@@ -6,16 +6,27 @@
     <ion-title>
       My todo's
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="refresh()">
+        <ion-icon slot="icon-only" name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  
+  <!-- <ion-spinner name="lines" *ngIf="isLoading$ | async as isLoading"></ion-spinner> -->
+
+  <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | async as isLoading"></ion-progress-bar>
+
   <ion-list *ngIf="items$ | async as items">
     <ion-item *ngFor="let item of items">
       {{item.title}}
       <div class="item-note" slot="end">
-        {{item.id}}
+        <ion-toggle [checked]="item.completed"></ion-toggle>
       </div>
     </ion-item>
   </ion-list>
+
 </ion-content>

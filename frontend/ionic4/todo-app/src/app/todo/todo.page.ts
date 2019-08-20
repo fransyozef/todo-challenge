@@ -12,12 +12,19 @@ export class TodoPage implements OnInit {
 
   items$: BehaviorSubject<TodoItemModel[]>;
 
+  isLoading$: BehaviorSubject<boolean>;
+
   constructor(
     private todoService: TodoService,
   ) { }
 
   ngOnInit() {
     this.items$  = this.todoService.items$;
+    this.isLoading$  = this.todoService.isLoading$;
+  }
+
+  refresh() {
+    this.todoService.fetch().subscribe();
   }
 
 }

@@ -11,6 +11,8 @@ import { TodoItemModel } from '../_models/todo-item.interface';
 })
 export class TodoService {
 
+  isLoading$ = new BehaviorSubject<boolean>(false);
+
   items$ = new BehaviorSubject<TodoItemModel[]>([]);
 
   constructor(
@@ -27,10 +29,21 @@ export class TodoService {
     return this.items$.getValue();
   }
 
+  startLoading() {
+    console.log('*** startLoading');
+    this.isLoading$.next(true);
+  }
+
+  stopLoading() {
+    console.log('*** stopLoading');
+    this.isLoading$.next(false);
+  }
+
   // fetch all the items from the server
   fetch(): Observable<any> {
 
     this.clear();
+    this.startLoading();
 
     // tslint:disable-next-line:no-string-literal
     return this.http.get(`${environment['apiBaseUrl']}todo/`)
@@ -39,7 +52,9 @@ export class TodoService {
           return data;
         }),
         tap((items) => { if (items) { this.items$.next(items); } }),
+        tap(_ => { this.stopLoading(); } ),
         catchError(err => {
+          this.stopLoading();
           return of(false);
         }),
       );

@@ -7,31 +7,36 @@
       Todo
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="refresh()">
+      <ion-button (click)="refresh()" [disabled]="isLoading$ | async">
         <ion-icon slot="icon-only" name="refresh"></ion-icon>
+      </ion-button>
+      <ion-button (click)="add()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  
-  <!-- <ion-spinner name="lines" *ngIf="isLoading$ | async as isLoading"></ion-spinner> -->
 
   <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | async as isLoading"></ion-progress-bar>
 
+  <!-- <ion-segment (ionChange)="segmentChanged($event)" [disabled]="isLoading$ | async">
+    <ion-segment-button value="all" checked>
+      <ion-label>All</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="completed">
+      <ion-label>Completed</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="todo">
+      <ion-label>Todo</ion-label>
+    </ion-segment-button>
+  </ion-segment> -->
+
+  <br>
+
   <ion-list *ngIf="items$ | async as items">
-    <ion-item *ngFor="let item of items">
-      {{item.title}}
-      <div class="item-note" slot="end">
-        <ion-toggle [checked]="item.completed"></ion-toggle>
-
-        <ion-button fill="clear">
-            <ion-icon slot="icon-only" name="trash"></ion-icon>
-        </ion-button>        
-
-      </div>
-    </ion-item>
+    <app-todo-list-item *ngFor="let item of items" [item]="item"></app-todo-list-item>
   </ion-list>
 
 </ion-content>

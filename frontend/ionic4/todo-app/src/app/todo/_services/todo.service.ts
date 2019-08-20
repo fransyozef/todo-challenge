@@ -30,12 +30,12 @@ export class TodoService {
   }
 
   startLoading() {
-    console.log('*** startLoading');
+    // console.log('*** startLoading');
     this.isLoading$.next(true);
   }
 
   stopLoading() {
-    console.log('*** stopLoading');
+    // console.log('*** stopLoading');
     this.isLoading$.next(false);
   }
 

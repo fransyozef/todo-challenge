@@ -1,0 +1,13 @@
+<ion-item>
+
+  <ion-label>
+    {{item.title}}
+  </ion-label>
+
+  <ion-toggle [checked]="item.completed" slot="start"></ion-toggle>
+
+  <ion-button fill="clear" slot="end" (click)="delete()">
+    <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>
+  </ion-button>
+
+</ion-item>

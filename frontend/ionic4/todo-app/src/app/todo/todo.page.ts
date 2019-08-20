@@ -14,17 +14,28 @@ export class TodoPage implements OnInit {
 
   isLoading$: BehaviorSubject<boolean>;
 
+  filterStatus: string;
+
   constructor(
     private todoService: TodoService,
   ) { }
 
   ngOnInit() {
+    this.filterStatus  = 'all';
+
     this.items$  = this.todoService.items$;
     this.isLoading$  = this.todoService.isLoading$;
   }
 
   refresh() {
     this.todoService.fetch().subscribe();
+  }
+
+  add() { }
+
+  segmentChanged($event) { 
+    // console.log("segmentChanged" , $event.detail.value);
+    this.filterStatus  = $event.detail.value;
   }
 
 }

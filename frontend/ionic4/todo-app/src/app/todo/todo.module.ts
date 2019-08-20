@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { TodoPage } from './todo.page';
+import { TodoListItemComponent } from './todo-list-item/todo-list-item.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,9 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [TodoPage]
+  declarations: [
+    TodoPage,
+    TodoListItemComponent
+  ]
 })
 export class TodoPageModule {}

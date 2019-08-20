@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Res, HttpStatus, UseGuards, Param, Req, Body, Put, Delete } from '@nestjs/common';
 import { Response, Request } from 'express';
+import { prisma, TodoItem } from '../__generated/prisma-client';
 
 @Controller('todo')
 export class TodoController {
@@ -7,7 +8,8 @@ export class TodoController {
     // get all items
     @Get('')
     async getItems() {
-        return [];
+        const items: TodoItem[] = await prisma.todoItems();
+        return items;
     }
 
     // get one item

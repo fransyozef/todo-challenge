@@ -91,4 +91,36 @@ export class TodoService {
       }
     }
   }
+
+  // add an item into local database
+  addItem(data: any): any {
+    const currentItems: TodoItemModel[] = this.getAll();
+    currentItems.push(data);
+    return currentItems;
+  }
+
+  // add an item into database
+  add(payload: any): Observable<any> {
+    // tslint:disable-next-line:no-string-literal
+    return this.http.post(`${environment['apiBaseUrl']}todo/` , payload)
+      .pipe(
+        map(data => {
+          // tslint:disable-next-line:no-string-literal
+          return data;
+        }
+        ),
+        tap((data) => {
+          // tslint:disable-next-line:no-string-literal
+          if (data['success'] === true) {
+
+            // tslint:disable-next-line:no-string-literal
+            const items  = this.addItem(data['result']);
+            this.items$.next(items);
+          }
+        }),
+        catchError((err) => {
+          return of(false);
+        }),
+      );
+  }
 }

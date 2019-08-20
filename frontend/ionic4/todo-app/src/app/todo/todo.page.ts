@@ -31,11 +31,32 @@ export class TodoPage implements OnInit {
     this.todoService.fetch().subscribe();
   }
 
-  add() { }
+  add() {
+    const title = 'item ' + this.makeid();
+    this.todoService.add(
+      {
+        title,
+        completed : false
+      }
+    ).subscribe(
+      (result) => {
+        console.log(result);
+      }
+    )
+  }
 
   segmentChanged($event) { 
     // console.log("segmentChanged" , $event.detail.value);
     this.filterStatus  = $event.detail.value;
   }
+
+  private makeid(): string {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 25; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+}
 
 }

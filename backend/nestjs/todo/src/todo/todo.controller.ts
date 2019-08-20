@@ -24,8 +24,15 @@ export class TodoController {
     // add an item
     @Post('')
     async add(@Res() res: Response, @Body() body) {
+
+        const newItem: TodoItem = await prisma.createTodoItem({
+            title: body.title,
+            completed: body.completed,
+        });
+
         res.status(HttpStatus.OK).json({
             success: true,
+            result: newItem,
         });
     }
 

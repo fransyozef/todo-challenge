@@ -10,14 +10,14 @@ import { TodoService } from './todo/_services/todo.service';
 export class AppComponent {
   public appPages = [
     {
-      title: 'Home',
-      url: '/home',
-      icon: 'home'
-    },
-    {
       title: 'Todo',
       url: '/todo',
       icon: 'list'
+    },
+    {
+      title: 'About',
+      url: '/about',
+      icon: 'information-circle-outline'
     }
   ];
 

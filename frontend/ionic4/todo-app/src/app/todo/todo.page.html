@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      My todo's
+      Todo
     </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="refresh()">
@@ -25,6 +25,11 @@
       {{item.title}}
       <div class="item-note" slot="end">
         <ion-toggle [checked]="item.completed"></ion-toggle>
+
+        <ion-button fill="clear">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-button>        
+
       </div>
     </ion-item>
   </ion-list>

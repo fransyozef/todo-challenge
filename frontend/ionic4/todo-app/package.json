@@ -1,12 +1,12 @@
 {
   "name": "todo-app",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Fransjo Leihitu",
   "homepage": "",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

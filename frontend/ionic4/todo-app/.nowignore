@@ -1,0 +1,7 @@
+test
+.env
+.env.*
+README.md
+*.prisma
+prisma.*
+e2e/

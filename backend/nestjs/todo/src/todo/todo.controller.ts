@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Res, HttpStatus, UseGuards, Param, Req, Body, Put, Delete } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { prisma, TodoItem } from '../__generated/prisma-client';
+import { Logger } from '@nestjs/common';
 
 @Controller('todo')
 export class TodoController {
@@ -46,9 +47,17 @@ export class TodoController {
 
     // delete an item
     @Delete(':id')
-    async delete(@Res() res: Response, @Body() body) {
+    async delete(@Res() res: Response, @Body() body, @Param() params) {
+        let success    = true;
+
+        try {
+            const deletedItem: TodoItem    = await prisma.deleteTodoItem({ id : params.id });
+        } catch (e) {
+            success    = false;
+        }
+
         res.status(HttpStatus.OK).json({
-            success: true,
+            success,
         });
     }
 

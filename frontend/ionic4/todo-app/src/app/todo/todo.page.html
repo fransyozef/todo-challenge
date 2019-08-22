@@ -1,21 +1,13 @@
 <ion-header>
   <ion-toolbar>
+    
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
 
-
-    <ion-segment (ionChange)="segmentChanged($event)" [disabled]="(isLoading$ | async) || (items$ | async).length == 0">
-        <ion-segment-button value="all" checked>
-          <ion-label>All</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="completed">
-          <ion-label>Completed</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="todo">
-          <ion-label>Todo</ion-label>
-        </ion-segment-button>
-      </ion-segment>
+    <ion-title>
+      Todo
+    </ion-title>
 
     <ion-buttons slot="end">
       <ion-button (click)="refresh()" [disabled]="isLoading$ | async">
@@ -25,6 +17,7 @@
         <ion-icon slot="icon-only" name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
@@ -48,3 +41,17 @@
   </ion-list>
 
 </ion-content>
+
+<ion-footer>
+  <ion-segment (ionChange)="segmentChanged($event)" [disabled]="(isLoading$ | async) || (items$ | async).length == 0">
+    <ion-segment-button value="all" checked>
+      <ion-label>All</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="completed">
+      <ion-label>Completed</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="todo">
+      <ion-label>Todo</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-footer>

@@ -42,7 +42,7 @@
 
 </ion-content>
 
-<ion-footer>
+<ion-footer padding>
   <ion-segment (ionChange)="segmentChanged($event)" [disabled]="(isLoading$ | async) || (items$ | async).length == 0">
     <ion-segment-button value="all" checked>
       <ion-label>All</ion-label>

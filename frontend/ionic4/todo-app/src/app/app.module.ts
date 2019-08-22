@@ -14,6 +14,8 @@ import { FakeBackendInterceptor } from './_shared/fakebackend';
 import { APP_BASE_HREF } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TodoService } from './todo/_services/todo.service';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +27,7 @@ import { TodoService } from './todo/_services/todo.service';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     { provide: APP_BASE_HREF, useValue: '/'},

@@ -12,7 +12,6 @@ import { TodoItemModel } from '../_models/todo-item.interface';
 export class TodoService {
 
   isLoading$ = new BehaviorSubject<boolean>(false);
-
   items$ = new BehaviorSubject<TodoItemModel[]>([]);
 
   constructor(

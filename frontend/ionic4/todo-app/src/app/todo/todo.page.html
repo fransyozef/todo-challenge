@@ -3,9 +3,20 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>
-      Todo
-    </ion-title>
+
+
+    <ion-segment (ionChange)="segmentChanged($event)" [disabled]="(isLoading$ | async) || (items$ | async).length == 0">
+        <ion-segment-button value="all" checked>
+          <ion-label>All</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="completed">
+          <ion-label>Completed</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="todo">
+          <ion-label>Todo</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
     <ion-buttons slot="end">
       <ion-button (click)="refresh()" [disabled]="isLoading$ | async">
         <ion-icon slot="icon-only" name="refresh"></ion-icon>
@@ -21,22 +32,11 @@
 
   <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | async as isLoading"></ion-progress-bar>
 
-  <ion-segment (ionChange)="segmentChanged($event)" [disabled]="(isLoading$ | async) || (items$ | async).length == 0">
-    <ion-segment-button value="all" checked>
-      <ion-label>All</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="completed">
-      <ion-label>Completed</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="todo">
-      <ion-label>Todo</ion-label>
-    </ion-segment-button>
-  </ion-segment>
   <br>
 
   <ion-card  *ngIf="!(isLoading$ | async) && (items$ | async).length == 0">
     <ion-card-header>
-      <ion-card-title>You don't have any Todo items.</ion-card-title>
+      <ion-card-title>You don't have any Todo items!</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       Try adding one.

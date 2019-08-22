@@ -38,15 +38,10 @@ export class TodoPage implements OnInit {
         title,
         completed : false
       }
-    ).subscribe(
-      (result) => {
-        console.log(result);
-      }
-    )
+    ).subscribe();
   }
 
   segmentChanged($event) { 
-    // console.log("segmentChanged" , $event.detail.value);
     this.filterStatus  = $event.detail.value;
   }
 
@@ -57,6 +52,26 @@ export class TodoPage implements OnInit {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
-}
+  }
+
+  filterItems(items: TodoItemModel[]) {
+    const filteredItems  = items.filter(
+      (item) => {
+        switch(this.filterStatus) {
+          default :
+          case 'all' : {
+            return true;
+          }
+          case 'completed' : {
+            return item.completed === true ? true : false ;
+          }
+          case 'todo' : {
+            return item.completed !== true ? true : false ;
+          }
+        }
+      }
+    );
+    return filteredItems;
+  }
 
 }

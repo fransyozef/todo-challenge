@@ -30,7 +30,6 @@ export class TodoService {
   }
 
   startLoading() {
-    // console.log('*** startLoading');
     this.isLoading$.next(true);
   }
 
@@ -62,16 +61,18 @@ export class TodoService {
 
   // delete an item
   delete(id: string): Observable<any> {
+    this.startLoading();
     // tslint:disable-next-line:no-string-literal
     return this.http.delete(`${environment['apiBaseUrl']}todo/${id}`)
       .pipe(
         map(data => {
           // tslint:disable-next-line:no-string-literal
           return (data['success'] && data['success'] === true) ? true : false;
-        }
-        ),
+        }),
         tap((success) => { if (success) { this.deleteItem(id); } }), // when success, delete the item from the local service
+        tap(_ => { this.stopLoading(); } ),
         catchError((err) => {
+          this.stopLoading();
           return of(false);
         }),
       );
@@ -101,14 +102,14 @@ export class TodoService {
 
   // add an item into database
   add(payload: any): Observable<any> {
+    this.startLoading();
     // tslint:disable-next-line:no-string-literal
     return this.http.post(`${environment['apiBaseUrl']}todo/` , payload)
       .pipe(
         map(data => {
           // tslint:disable-next-line:no-string-literal
           return data;
-        }
-        ),
+        }),
         tap((data) => {
           // tslint:disable-next-line:no-string-literal
           if (data['success'] === true) {
@@ -118,7 +119,9 @@ export class TodoService {
             this.items$.next(items);
           }
         }),
+        tap(_ => { this.stopLoading(); } ),
         catchError((err) => {
+          this.stopLoading();
           return of(false);
         }),
       );

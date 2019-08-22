@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TodoItemModel } from '../_models/todo-item.interface';
 import { AlertController } from '@ionic/angular';
+import { TodoService } from '../_services/todo.service';
 
 @Component({
   selector: 'app-todo-list-item',
@@ -13,12 +14,17 @@ export class TodoListItemComponent implements OnInit {
 
   constructor(
     public alertController: AlertController,
+    private todoService: TodoService,
   ) { }
 
   ngOnInit() {}
 
   delete() { 
     this.presentAlertConfirm();
+  }
+
+  handleDelete() {
+    this.todoService.delete(this.item.id).subscribe();
   }
 
   async presentAlertConfirm() {
@@ -37,6 +43,7 @@ export class TodoListItemComponent implements OnInit {
           text: 'Yes',
           handler: () => {
             // console.log('Confirm Okay');
+            this.handleDelete();
           }
         }
       ]

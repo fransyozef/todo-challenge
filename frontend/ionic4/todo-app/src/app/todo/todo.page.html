@@ -21,7 +21,7 @@
 
   <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | async as isLoading"></ion-progress-bar>
 
-  <!-- <ion-segment (ionChange)="segmentChanged($event)" [disabled]="isLoading$ | async">
+  <ion-segment (ionChange)="segmentChanged($event)" [disabled]="(isLoading$ | async) || (items$ | async).length == 0">
     <ion-segment-button value="all" checked>
       <ion-label>All</ion-label>
     </ion-segment-button>
@@ -31,12 +31,20 @@
     <ion-segment-button value="todo">
       <ion-label>Todo</ion-label>
     </ion-segment-button>
-  </ion-segment> -->
-
+  </ion-segment>
   <br>
 
+  <ion-card  *ngIf="!(isLoading$ | async) && (items$ | async).length == 0">
+    <ion-card-header>
+      <ion-card-title>You don't have any Todo items.</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      Try adding one.
+    </ion-card-content>
+  </ion-card>
+
   <ion-list *ngIf="items$ | async as items">
-    <app-todo-list-item *ngFor="let item of items" [item]="item"></app-todo-list-item>
+    <app-todo-list-item *ngFor="let item of filterItems(items)" [item]="item"></app-todo-list-item>
   </ion-list>
 
 </ion-content>

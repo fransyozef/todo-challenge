@@ -1,8 +1,8 @@
 {
   "index": "/index.html",
   "appData": {
-    "version": "0.0.17",
-    "changelog": "Update"
+    "version": "0.0.19",
+    "changelog": "Interval checking for update via swUpdate"
   },
   "assetGroups": [
     {

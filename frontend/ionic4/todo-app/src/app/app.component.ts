@@ -38,6 +38,10 @@ export class AppComponent implements OnInit {
       this.todoService.fetch().subscribe();
       this.showIosInstallBanner();
       this.checkUpdate();
+
+      setInterval(() => {
+        this.swUpdate.checkForUpdate();
+      } , 21600);
     });
   }
 

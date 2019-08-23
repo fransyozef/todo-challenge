@@ -4,7 +4,11 @@
     "routes": [
       {
         "src": "dist/main.*.js",
-        "headers": { "cache-control": "max-age=0" }
+        "headers": { "Cache-Control": "s-maxage=0, max-age=0" }
+      },
+      {
+        "src": "dist/ngsw.json",
+        "headers": { "Cache-Control": "s-maxage=0, max-age=0" }
       }
     ] 
   }

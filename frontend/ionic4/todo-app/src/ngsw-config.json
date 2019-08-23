@@ -1,8 +1,8 @@
 {
   "index": "/index.html",
   "appData": {
-    "version": "0.0.19",
-    "changelog": "Interval checking for update via swUpdate"
+    "version": "0.0.20",
+    "changelog": "Update PWA icons"
   },
   "assetGroups": [
     {

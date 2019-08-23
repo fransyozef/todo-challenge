@@ -31,17 +31,13 @@ export class AppComponent implements OnInit {
     private toastController: ToastController,
     private swUpdate: SwUpdate,
     private alertController: AlertController,
-  ) {
-    this.initializeApp();
-
-    this.todoService.fetch().subscribe();
-
-    this.showIosInstallBanner();
-  }
+  ) { }
 
   initializeApp() {
     this.platform.ready().then(() => {
-
+      this.todoService.fetch().subscribe();
+      this.showIosInstallBanner();
+      this.checkUpdate();
     });
   }
 
@@ -71,7 +67,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  checkUpdate() {
     if (this.swUpdate.isEnabled) {
       this.swUpdate.available.subscribe(async () => {
         const alert = await this.alertController.create({
@@ -90,10 +86,13 @@ export class AppComponent implements OnInit {
             },
           ],
         });
-  
         await alert.present();
       });
     }
+  }
+
+  ngOnInit() {
+    this.initializeApp();
   }
 
 }

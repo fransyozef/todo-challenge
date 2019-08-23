@@ -1,14 +1,14 @@
 {
   "index": "/index.html",
   "appData": {
-    "version": "0.0.15",
-    "changelog": "Update icons"
+    "version": "0.0.17",
+    "changelog": "Update"
   },
   "assetGroups": [
     {
       "name": "shell",
       "installMode": "prefetch",
-      "updateMode": "lazy",
+      "updateMode": "prefetch",
       "resources": {
         "files": [
           "/favicon.ico",

@@ -8,7 +8,7 @@
     {
       "name": "shell",
       "installMode": "prefetch",
-      "updateMode": "prefetch",
+      "updateMode": "lazy",
       "resources": {
         "files": [
           "/favicon.ico",

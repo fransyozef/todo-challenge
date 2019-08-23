@@ -1,4 +1,10 @@
 {
     "version": 2,
-    "name": "todo-ionic"
+    "name": "todo-ionic",
+    "routes": [
+      {
+        "src": "dist/main.*.js",
+        "headers": { "cache-control": "max-age=0" }
+      }
+    ] 
   }

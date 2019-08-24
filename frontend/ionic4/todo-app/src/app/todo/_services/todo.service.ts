@@ -49,7 +49,7 @@ export class TodoService {
         }),
         tap((result) => {
           if (result) {
-            console.log(result);
+            // console.log(result);
           }
         }), // when success, delete the item from the local service
         tap(_ => { this.stopLoading(); } ),

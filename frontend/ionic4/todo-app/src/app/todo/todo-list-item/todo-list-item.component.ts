@@ -24,9 +24,9 @@ export class TodoListItemComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.completeStatus  = this.item.completed;
-    this.canToggle  = true;
-    this.disabled  = false;
+    this.completeStatus = this.item.completed;
+    this.canToggle = true;
+    this.disabled = false;
   }
 
   delete() {
@@ -77,32 +77,36 @@ export class TodoListItemComponent implements OnInit {
   }
 
   toggleChange($event) {
-    if ($event) {
-      if (this.canToggle === true) {
-        this.disabled  = true;
-        this.todoService.update(this.item.id , { completed: this.completeStatus }).subscribe(
-          (result) => {
 
-            this.item.completed  = result ? this.completeStatus : !this.completeStatus;
+    if (this.canToggle === true) {
+      this.disabled = true;
+      this.todoService.update(this.item.id, { completed: this.completeStatus }).subscribe(
+        (result) => {
 
-            this.canToggle  = false;
+          this.item.completed = result ? this.completeStatus : !this.completeStatus;
 
-            this.todoService.updateItem(this.item.id , this.item);
+          this.canToggle = false;
 
-            this.completeStatus  = this.item.completed;
-            this.disabled  = false;
+          this.todoService.updateItem(this.item.id, this.item);
 
-            if (result) {
-              this.presentToast('changed completed status');
-            } else {
-              this.presentToast('failed to change completed status');
-            }
+          this.completeStatus = this.item.completed;
+          this.disabled = false;
+
+          if (result) {
+            this.presentToast('changed completed status');
+          } else {
+            this.presentToast('failed to change completed status');
           }
-        );
-      } else {
-        this.canToggle  = true;
-      }
+
+          setTimeout(() => {
+            this.canToggle = true;
+          }, 1000);
+        }
+      );
+    } else {
+      this.canToggle = true;
     }
+
   }
 
 }

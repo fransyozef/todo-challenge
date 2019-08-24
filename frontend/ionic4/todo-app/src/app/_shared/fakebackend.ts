@@ -66,6 +66,20 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 return of(new HttpResponse({ status: 200, body }));
             }
 
+            // Update an Todo Item
+            // tslint:disable-next-line:no-string-literal
+            if (request.url.startsWith(`${environment['apiBaseUrl']}todo/`) && request.method === 'PUT') {
+                console.log(`[FakeBackendInterceptor] intercepted: ${request.method} ${request.url}`);
+                const body = {
+                    success: true,
+                    result    : {
+                        title    : 'yow'
+                    }
+                };
+
+                return of(new HttpResponse({ status: 200, body }));
+            }
+
             // at default just process the request
             return next.handle(request);
         }))

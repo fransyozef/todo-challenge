@@ -13,13 +13,21 @@ export class TodoListItemComponent implements OnInit {
 
   @Input() item: TodoItemModel;
 
+  completeStatus: boolean;
+  canToggle: boolean;
+  disabled: boolean;
+
   constructor(
     public alertController: AlertController,
     private todoService: TodoService,
     public toastController: ToastController,
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.completeStatus  = this.item.completed;
+    this.canToggle  = true;
+    this.disabled  = false;
+  }
 
   delete() {
     this.presentAlertConfirm();
@@ -66,6 +74,35 @@ export class TodoListItemComponent implements OnInit {
     });
 
     await alert.present();
+  }
+
+  toggleChange($event) {
+    if ($event) {
+      if (this.canToggle === true) {
+        this.disabled  = true;
+        this.todoService.update(this.item.id , { completed: this.completeStatus }).subscribe(
+          (result) => {
+
+            this.item.completed  = result ? this.completeStatus : !this.completeStatus;
+
+            this.canToggle  = false;
+
+            this.todoService.updateItem(this.item.id , this.item);
+
+            this.completeStatus  = this.item.completed;
+            this.disabled  = false;
+
+            if (result) {
+              this.presentToast('changed completed status');
+            } else {
+              this.presentToast('failed to change completed status');
+            }
+          }
+        );
+      } else {
+        this.canToggle  = true;
+      }
+    }
   }
 
 }

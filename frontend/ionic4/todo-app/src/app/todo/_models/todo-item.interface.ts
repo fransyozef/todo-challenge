@@ -3,3 +3,7 @@ export interface TodoItemModel {
     title: string;
     completed: boolean;
 }
+
+export interface TodoItemCompletedModel {
+    completed: boolean;
+}

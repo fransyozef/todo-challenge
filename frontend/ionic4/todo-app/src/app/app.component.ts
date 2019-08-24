@@ -39,9 +39,11 @@ export class AppComponent implements OnInit {
       this.showIosInstallBanner();
       this.checkUpdate();
 
-      setInterval(() => {
-        this.swUpdate.checkForUpdate();
-      } , 21600);
+      if (this.swUpdate.isEnabled) {
+        setInterval(() => {
+          this.swUpdate.checkForUpdate();
+        } , 21600);
+      }
     });
   }
 

@@ -39,10 +39,27 @@ export class TodoController {
 
     // update an item
     @Put(':id')
-    async update(@Res() res: Response, @Body() body) {
-        res.status(HttpStatus.OK).json({
-            success: true,
-        });
+    async update(@Res() res: Response, @Body() body, @Param() params) {
+
+        const returnValue = {
+            success : true,
+            result: null,
+        };
+
+        try {
+            const updateItem: TodoItem    = await prisma.updateTodoItem({
+                data : body,
+                where: {
+                    id: params.id,
+                },
+            });
+
+            returnValue.result    = updateItem;
+        } catch (e) {
+            returnValue.success = false;
+        }
+
+        res.status(HttpStatus.OK).json(returnValue);
     }
 
     // delete an item

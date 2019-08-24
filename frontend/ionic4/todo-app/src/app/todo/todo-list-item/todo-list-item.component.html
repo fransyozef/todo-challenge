@@ -1,10 +1,10 @@
-<ion-item>
+<ion-item [disabled]="disabled">
 
   <ion-label>
     {{item.title}}
   </ion-label>
 
-  <ion-toggle [checked]="item.completed" slot="start"></ion-toggle>
+  <ion-toggle slot="start" (ionChange)='toggleChange($event)' [(ngModel)]="completeStatus"></ion-toggle>
 
   <ion-button fill="clear" slot="end" (click)="delete()">
     <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>

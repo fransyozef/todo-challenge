@@ -4,7 +4,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject, throwError, of, BehaviorSubject } from 'rxjs';
 import { map, mergeMap, switchMap, catchError, tap } from 'rxjs/operators';
 
-import { TodoItemModel } from '../_models/todo-item.interface';
+import { TodoItemModel, TodoItemCompletedModel } from '../_models/todo-item.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +35,29 @@ export class TodoService {
   stopLoading() {
     // console.log('*** stopLoading');
     this.isLoading$.next(false);
+  }
+
+  // delete an item
+  update(id: string, payload: TodoItemModel | TodoItemCompletedModel): Observable<any> {
+    this.startLoading();
+    // tslint:disable-next-line:no-string-literal
+    return this.http.put(`${environment['apiBaseUrl']}todo/${id}` , payload)
+      .pipe(
+        map(data => {
+          // tslint:disable-next-line:no-string-literal
+          return (data['success'] && data['success'] === true) ? data['result'] : false;
+        }),
+        tap((result) => {
+          if (result) {
+            console.log(result);
+          }
+        }), // when success, delete the item from the local service
+        tap(_ => { this.stopLoading(); } ),
+        catchError((err) => {
+          this.stopLoading();
+          return of(false);
+        }),
+      );
   }
 
   // fetch all the items from the server
@@ -90,6 +113,21 @@ export class TodoService {
         return true;
       }
     }
+  }
+
+  // update an item from the local service
+  updateItem(id: string , payload: TodoItemModel): boolean {
+    const currentItems: TodoItemModel[] = this.getAll();
+    if (currentItems.length > 0) {
+      const index1 = currentItems.findIndex((element) => {
+        return element.id === id;
+      });
+      if (index1 >= 0) {
+        this.items$.next(currentItems);
+        return true;
+      }
+    }
+    return false;
   }
 
   // add an item into local database

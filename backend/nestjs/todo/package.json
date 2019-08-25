@@ -1,8 +1,9 @@
 {
   "name": "todo",
   "version": "0.0.8",
-  "description": "",
-  "author": "Fransjo Leihitu",
+  "description": "NestJS backend for the Todo App Challenge",
+  "author": "The Hangry Coder",
+  "homepage": "https://medium.com/@fransyozef",
   "license": "MIT",
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.build.json",

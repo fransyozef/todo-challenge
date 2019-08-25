@@ -26,15 +26,22 @@ export class TodoController {
     @Post('')
     async add(@Res() res: Response, @Body() body) {
 
-        const newItem: TodoItem = await prisma.createTodoItem({
-            title: body.title,
-            completed: body.completed,
-        });
-
-        res.status(HttpStatus.OK).json({
+        const returnValue = {
             success: true,
-            result: newItem,
-        });
+            result: null,
+        };
+
+        try {
+            const newItem: TodoItem = await prisma.createTodoItem({
+                title: body.title,
+                completed: body.completed,
+            });
+            returnValue.result = newItem;
+        } catch (e) {
+            returnValue.success = false;
+        }
+
+        res.status(HttpStatus.OK).json(returnValue);
     }
 
     // update an item
@@ -42,19 +49,19 @@ export class TodoController {
     async update(@Res() res: Response, @Body() body, @Param() params) {
 
         const returnValue = {
-            success : true,
+            success: true,
             result: null,
         };
 
         try {
-            const updateItem: TodoItem    = await prisma.updateTodoItem({
-                data : body,
+            const updateItem: TodoItem = await prisma.updateTodoItem({
+                data: body,
                 where: {
                     id: params.id,
                 },
             });
 
-            returnValue.result    = updateItem;
+            returnValue.result = updateItem;
         } catch (e) {
             returnValue.success = false;
         }
@@ -65,12 +72,12 @@ export class TodoController {
     // delete an item
     @Delete(':id')
     async delete(@Res() res: Response, @Body() body, @Param() params) {
-        let success    = true;
+        let success = true;
 
         try {
-            const deletedItem: TodoItem    = await prisma.deleteTodoItem({ id : params.id });
+            const deletedItem: TodoItem = await prisma.deleteTodoItem({ id: params.id });
         } catch (e) {
-            success    = false;
+            success = false;
         }
 
         res.status(HttpStatus.OK).json({

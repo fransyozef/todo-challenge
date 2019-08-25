@@ -73,7 +73,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 const body = {
                     success: true,
                     result    : {
-                        title    : 'yow'
+                        title    : 'Update title',
+                        completed: true,
+                        id: this.makeid()
                     }
                 };
 

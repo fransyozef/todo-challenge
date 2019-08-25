@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>{{pageTitle}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="itemForm">
+
+    <ion-list lines="full" class="ion-no-margin ion-no-padding">
+      <ion-item>
+        <ion-label position="fixed">Title <ion-text color="danger">*</ion-text>
+        </ion-label>
+        <ion-input required clearInput type="text" name="title" formControlName="title"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="fixed">Completed </ion-label>
+        <ion-toggle formControlName="completed"></ion-toggle>
+      </ion-item>
+    </ion-list>
+
+  </form>
+
+</ion-content>
+
+<ion-footer>
+  <div class="ion-padding">
+    <ion-button expand="block" type="submit" class="ion-no-margin" (click)="submit()" [disabled]="!itemForm.valid">Create todo item</ion-button>
+  </div>
+</ion-footer>

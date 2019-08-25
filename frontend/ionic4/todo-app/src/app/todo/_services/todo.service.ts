@@ -145,14 +145,13 @@ export class TodoService {
       .pipe(
         map(data => {
           // tslint:disable-next-line:no-string-literal
+          return (data['success'] && data['success'] === true) ? data['result'] : false;
           return data;
         }),
-        tap((data) => {
-          // tslint:disable-next-line:no-string-literal
-          if (data['success'] === true) {
-
+        tap((result) => {
+          if (result) {
             // tslint:disable-next-line:no-string-literal
-            const items  = this.addItem(data['result']);
+            const items  = this.addItem(result);
             this.items$.next(items);
           }
         }),

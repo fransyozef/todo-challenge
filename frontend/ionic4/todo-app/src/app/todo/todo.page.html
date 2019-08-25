@@ -13,7 +13,7 @@
       <ion-button (click)="refresh()" [disabled]="isLoading$ | async">
         <ion-icon slot="icon-only" name="refresh"></ion-icon>
       </ion-button>
-      <ion-button (click)="add()">
+      <ion-button routerLink="/todo/new" routerDirection="forward">
         <ion-icon slot="icon-only" name="add"></ion-icon>
       </ion-button>
     </ion-buttons>

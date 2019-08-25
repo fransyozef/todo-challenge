@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject,throwError, of , BehaviorSubject} from 'rxjs';
+import { Observable, Subject, throwError, of , BehaviorSubject} from 'rxjs';
 import { TodoService } from './_services/todo.service';
 import { TodoItemModel } from './_models/todo-item.interface';
-import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-todo',
@@ -19,7 +18,6 @@ export class TodoPage implements OnInit {
 
   constructor(
     private todoService: TodoService,
-    private navCtrl: NavController,
   ) { }
 
   ngOnInit() {
@@ -31,17 +29,6 @@ export class TodoPage implements OnInit {
 
   refresh() {
     this.todoService.fetch().subscribe();
-  }
-
-  add() {
-    // const title = 'item ' + this.makeid();
-    // this.todoService.add(
-    //   {
-    //     title,
-    //     completed : false
-    //   }
-    // ).subscribe();
-    this.navCtrl.navigateForward('/todo/new');
   }
 
   segmentChanged($event) { 

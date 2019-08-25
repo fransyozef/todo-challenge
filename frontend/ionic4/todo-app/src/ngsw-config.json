@@ -1,8 +1,8 @@
 {
   "index": "/index.html",
   "appData": {
-    "version": "0.0.22",
-    "changelog": "Update complete status fix"
+    "version": "0.0.24",
+    "changelog": "Update navigation"
   },
   "assetGroups": [
     {

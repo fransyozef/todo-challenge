@@ -29,6 +29,14 @@ export class AppComponent implements OnInit {
 
   onPageVisibleSubscription: Subscription;
 
+  isIos = () => {
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    return /iphone|ipad|ipod/.test(userAgent);
+  }
+
+  // tslint:disable-next-line:no-string-literal
+  isInStandaloneMode = () => ('standalone' in window.navigator) && window.navigator['standalone'];
+
   constructor(
     private platform: Platform,
     private todoService: TodoService,
@@ -40,47 +48,46 @@ export class AppComponent implements OnInit {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.todoService.fetch().subscribe(
-        () => {
-          this.onPageVisibleSubscription = this.angularPageVisibilityService.$onPageVisibilityChange.subscribe((
-            visibilityState: AngularPageVisibilityStateEnum
-          ) => {
-            localStorage.setItem('visibility' , '' + visibilityState);
-          } );
-        }
-      );
+      this.todoService.fetch().subscribe();
       this.showIosInstallBanner();
       this.checkUpdate();
-
-      setInterval(() => {
-        const visibility = localStorage.getItem('visibility');
-        if(visibility === 'hidden') {
-          localStorage.setItem('visibility' , 'visible');
-          this.checkUpdate();
-        }
-      }, 1000);
-
+      this.initPageVisibility();
     });
   }
 
-  fetchItems() {
-    this.todoService.fetch().subscribe();
+  initPageVisibility() {
+    if (this.isIos() && this.isInStandaloneMode()) {
+      // listen on page visibility change
+      this.onPageVisibleSubscription = this.angularPageVisibilityService.$onPageVisibilityChange.subscribe((
+        visibilityState: AngularPageVisibilityStateEnum
+      ) => {
+        const visibility = localStorage.getItem('visibility');
+        let status  = '';
+        switch (visibilityState) {
+          case AngularPageVisibilityStateEnum.VISIBLE: {
+            status = 'VISIBLE';
+            localStorage.setItem('visibility', status);
+            if (visibility === 'HIDDEN') {
+              this.swUpdate.checkForUpdate();
+            }
+            break;
+          }
+          case AngularPageVisibilityStateEnum.HIDDEN: {
+            status = 'HIDDEN';
+            localStorage.setItem('visibility', status);
+            break;
+          }
+        }
+      });
+    }
   }
 
   async showIosInstallBanner() {
-    // Detects if device is on iOS
-    const isIos = () => {
-      const userAgent = window.navigator.userAgent.toLowerCase();
-      return /iphone|ipad|ipod/.test(userAgent);
-    };  // Detects if device is in standalone mode
-    // tslint:disable-next-line:no-string-literal
-    const isInStandaloneMode = () => ('standalone' in window.navigator) && window.navigator['standalone'];
-  
     // Show the banner once
     const isBannerShown = await get('isBannerShown');
-  
+
     // Checks if it should display install popup notification
-    if (isIos() && !isInStandaloneMode() && isBannerShown === undefined) {
+    if (this.isIos() && !this.isInStandaloneMode() && isBannerShown === undefined) {
       const toast = await this.toastController.create({
         showCloseButton: true,
         closeButtonText: 'OK',

@@ -6,13 +6,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-
-  visibility: any;
-
-  constructor() { }
-  
-  ngOnInit() {
-    this.visibility = localStorage.getItem('visibility');
-  }
-
+  constructor( ) { }
+  ngOnInit() { }
 }

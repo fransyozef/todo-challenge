@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="itemForm">
+  <form [formGroup]="itemForm" *ngIf="showForm">
 
     <ion-list lines="full" class="ion-no-margin ion-no-padding">
       <ion-item>
@@ -30,6 +30,6 @@
 
 <ion-footer>
   <div class="ion-padding">
-    <ion-button expand="block" type="submit" class="ion-no-margin" (click)="submit()" [disabled]="!itemForm.valid">Create todo item</ion-button>
+    <ion-button *ngIf="showForm" expand="block" type="submit" class="ion-no-margin" (click)="submit()" [disabled]="!itemForm.valid">{{ buttonText }}</ion-button>
   </div>
 </ion-footer>

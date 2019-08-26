@@ -5,6 +5,7 @@ import { Observable, Subject, throwError, of, BehaviorSubject } from 'rxjs';
 import { map, mergeMap, switchMap, catchError, tap } from 'rxjs/operators';
 
 import { TodoItemModel, TodoItemCompletedModel } from '../_models/todo-item.interface';
+import { unescapeHtml } from '@angular/platform-browser/src/browser/transfer_state';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,19 @@ export class TodoService {
     this.items$.next([]);
   }
 
+  getItemLocal(id: string): TodoItemModel | null {
+    const currentItems: TodoItemModel[] = this.getAll();
+    if (currentItems.length > 0) {
+      const index1 = currentItems.findIndex((element) => {
+        return element.id === id;
+      });
+      if (index1 >= 0) {
+        return currentItems[index1];
+      }
+    }
+    return null;
+  }
+
   // get all items in the local service
   getAll(): TodoItemModel[] {
     return this.items$.getValue();
@@ -33,12 +47,33 @@ export class TodoService {
   }
 
   stopLoading() {
-    // console.log('*** stopLoading');
     this.isLoading$.next(false);
   }
 
-  // delete an item
+  updateLocalItem(id: string, payload: TodoItemModel): boolean {
+    const currentItems: TodoItemModel[] = this.getAll();
+    if (currentItems.length > 0) {
+      const index1 = currentItems.findIndex((element) => {
+        return element.id === id;
+      });
+      if (index1 >= 0) {
+        currentItems[index1]  = payload;
+        this.items$.next(currentItems);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // update an item on server
   update(id: string, payload: TodoItemModel | TodoItemCompletedModel): Observable<any> {
+
+    // tslint:disable-next-line:no-string-literal
+    if (payload['id']) {
+      // tslint:disable-next-line:no-string-literal
+      delete payload['id'];
+    }
+
     this.startLoading();
     // tslint:disable-next-line:no-string-literal
     return this.http.put(`${environment['apiBaseUrl']}todo/${id}` , payload)
@@ -49,7 +84,8 @@ export class TodoService {
         }),
         tap((result) => {
           if (result) {
-            // console.log(result);
+            result.id  = id;
+            this.updateLocalItem(id , result);
           }
         }), // when success, delete the item from the local service
         tap(_ => { this.stopLoading(); } ),

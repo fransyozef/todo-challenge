@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TodoItemModel } from '../_models/todo-item.interface';
 import { TodoService } from '../_services/todo.service';
 import { ToastController, NavController } from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-todo-detail',
@@ -14,17 +15,54 @@ export class TodoDetailPage implements OnInit {
   itemForm: FormGroup;
   item: TodoItemModel;
   pageTitle: string;
+  buttonText: string;
+
+  id: string;
+  showForm: boolean;
 
   constructor(
     private todoService: TodoService,
     public toastController: ToastController,
     private navCtrl: NavController,
-  ) { 
-    this.pageTitle  = 'Add todo item';
+    private route: ActivatedRoute,
+  ) {
+    this.showForm  = false;
+    this.pageTitle = 'Add todo item';
+    this.buttonText  = 'Add';
   }
 
   ngOnInit() {
-    this.initForm();
+    this.resolveRoute();
+  }
+
+  resolveRoute() {
+
+    this.route.params.subscribe(params => {
+      // tslint:disable-next-line:no-string-literal
+      if (params['id']) {
+        // tslint:disable-next-line:no-string-literal
+        this.id = params['id'];
+        this.getItem();
+      } else {
+        // this.handleItemNotFound();
+        this.initForm();
+      }
+    });
+  }
+
+  getItem() {
+    if (this.id) {
+      const item  = this.todoService.getItemLocal(this.id);
+      if (item) {
+        this.item  = item;
+        this.pageTitle  = 'Edit todo item';
+        this.buttonText = 'Update';
+        this.initForm();
+      } else {
+        this.presentToast('Cannot find todo item');
+        this.navCtrl.navigateRoot('/todo');
+      }
+    }
   }
 
   async presentToast(message: string) {
@@ -39,7 +77,16 @@ export class TodoDetailPage implements OnInit {
   submit() {
     if (this.itemForm.valid) {
       if (this.item) {
-
+        this.todoService.update(this.id, this.itemForm.value).subscribe(
+          (result) => {
+            if (result) {
+              this.presentToast('Todo item was updated');
+              this.item  = result;
+            } else {
+              this.presentToast('Todo item was NOT updated');
+            }
+          }
+        );
       } else {
         this.todoService.add(this.itemForm.value).subscribe(
           (result) => {
@@ -49,7 +96,7 @@ export class TodoDetailPage implements OnInit {
         );
       }
     } else {
-      console.log('nope');
+      this.presentToast('You forgot some required fields!');
     }
   }
 
@@ -59,13 +106,14 @@ export class TodoDetailPage implements OnInit {
       completed: new FormControl(this.item ? this.item.completed : false),
       id: new FormControl(this.item ? this.item.id : null),
     });
+    this.showForm  = true;
   }
 
   private makeid(): string {
     let text = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (let i = 0; i < 25; i++) {
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
   }

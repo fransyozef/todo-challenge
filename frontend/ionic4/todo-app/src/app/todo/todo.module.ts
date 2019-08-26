@@ -15,6 +15,10 @@ const routes: Routes = [
     component: TodoPage
   },
   {
+    path: 'get/:id',
+    component: TodoDetailPage
+  },
+  {
     path: 'new',
     component: TodoDetailPage
   }

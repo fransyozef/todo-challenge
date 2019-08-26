@@ -1,8 +1,8 @@
 {
   "index": "/index.html",
   "appData": {
-    "version": "0.0.28",
-    "changelog": "Save visibility state, then check version"
+    "version": "0.0.29",
+    "changelog": "Update item"
   },
   "assetGroups": [
     {

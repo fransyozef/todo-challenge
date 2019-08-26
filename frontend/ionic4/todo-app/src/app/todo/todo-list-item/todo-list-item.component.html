@@ -1,6 +1,6 @@
 <ion-item [disabled]="disabled">
 
-  <ion-label>
+  <ion-label [routerLink]="['/todo/get',item.id]" routerDirection="forward">
     {{item.title}}
   </ion-label>
 

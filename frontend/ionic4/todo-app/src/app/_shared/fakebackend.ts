@@ -69,13 +69,19 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             // Update an Todo Item
             // tslint:disable-next-line:no-string-literal
             if (request.url.startsWith(`${environment['apiBaseUrl']}todo/`) && request.method === 'PUT') {
+                const bodyPosted    = request.body;
                 console.log(`[FakeBackendInterceptor] intercepted: ${request.method} ${request.url}`);
                 const body = {
                     success: true,
                     result    : {
-                        title    : 'Update title',
-                        completed: true,
-                        id: this.makeid()
+                        // tslint:disable-next-line:no-string-literal
+                        title    : bodyPosted['title'] ? bodyPosted['title'] : 'Update title',
+
+                        // tslint:disable-next-line:no-string-literal
+                        completed: bodyPosted['completed'] ? bodyPosted['completed'] : false,
+
+                        // tslint:disable-next-line:no-string-literal
+                        id: bodyPosted['id'] ? bodyPosted['id'] : this.makeid()
                     }
                 };
 

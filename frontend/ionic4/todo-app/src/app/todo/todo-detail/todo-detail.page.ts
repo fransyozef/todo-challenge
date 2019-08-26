@@ -70,6 +70,7 @@ export class TodoDetailPage implements OnInit {
       message,
       duration: 1500,
       position: 'top',
+      color: 'dark',
     });
     toast.present();
   }

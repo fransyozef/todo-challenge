@@ -50,6 +50,7 @@ export class TodoListItemComponent implements OnInit {
       message,
       duration: 1500,
       position: 'top',
+      color: 'dark',
     });
     toast.present();
   }

@@ -16,6 +16,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TodoService } from './todo/_services/todo.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { AngularPageVisibilityModule } from 'angular-page-visibility';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,6 +29,7 @@ import { environment } from '../environments/environment';
     ReactiveFormsModule,
     FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    AngularPageVisibilityModule,
   ],
   providers: [
     { provide: APP_BASE_HREF, useValue: '/'},

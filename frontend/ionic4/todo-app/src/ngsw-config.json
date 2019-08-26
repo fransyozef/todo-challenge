@@ -1,8 +1,8 @@
 {
   "index": "/index.html",
   "appData": {
-    "version": "0.0.26",
-    "changelog": "Fix backbutton"
+    "version": "0.0.27",
+    "changelog": "Save visibility state"
   },
   "assetGroups": [
     {

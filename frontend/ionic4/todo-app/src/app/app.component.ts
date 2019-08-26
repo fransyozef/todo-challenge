@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Platform, AlertController } from '@ionic/angular';
 
@@ -6,6 +7,7 @@ import { TodoService } from './todo/_services/todo.service';
 import { get, set } from 'idb-keyval';
 import { ToastController } from '@ionic/angular';
 import { SwUpdate } from '@angular/service-worker';
+import { AngularPageVisibilityService, AngularPageVisibilityStateEnum } from 'angular-page-visibility';
 
 @Component({
   selector: 'app-root',
@@ -25,26 +27,44 @@ export class AppComponent implements OnInit {
     }
   ];
 
+  onPageVisibleSubscription: Subscription;
+
   constructor(
     private platform: Platform,
     private todoService: TodoService,
     private toastController: ToastController,
     private swUpdate: SwUpdate,
     private alertController: AlertController,
+    private angularPageVisibilityService: AngularPageVisibilityService,
   ) { }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.todoService.fetch().subscribe();
+      this.todoService.fetch().subscribe(
+        () => {
+          this.onPageVisibleSubscription = this.angularPageVisibilityService.$onPageVisibilityChange.subscribe((
+            visibilityState: AngularPageVisibilityStateEnum
+          ) => {
+            localStorage.setItem('visibility' , '' + visibilityState);
+          } );
+        }
+      );
       this.showIosInstallBanner();
       this.checkUpdate();
 
-      if (this.swUpdate.isEnabled) {
-        setInterval(() => {
-          this.swUpdate.checkForUpdate();
-        } , 21600);
-      }
+      setInterval(() => {
+        const visibility = localStorage.getItem('visibility');
+        if(visibility === 'hidden') {
+          localStorage.setItem('visibility' , 'visible');
+          this.checkUpdate();
+        }
+      }, 1000);
+
     });
+  }
+
+  fetchItems() {
+    this.todoService.fetch().subscribe();
   }
 
   async showIosInstallBanner() {

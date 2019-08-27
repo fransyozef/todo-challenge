@@ -1,8 +1,9 @@
+import { ToastService } from './../../_shared/toast.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TodoItemModel } from '../_models/todo-item.interface';
 import { TodoService } from '../_services/todo.service';
-import { ToastController, NavController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -22,9 +23,9 @@ export class TodoDetailPage implements OnInit {
 
   constructor(
     private todoService: TodoService,
-    public toastController: ToastController,
     private navCtrl: NavController,
     private route: ActivatedRoute,
+    private toastService: ToastService,
   ) {
     this.showForm  = false;
     this.pageTitle = 'Add todo item';
@@ -59,20 +60,10 @@ export class TodoDetailPage implements OnInit {
         this.buttonText = 'Update';
         this.initForm();
       } else {
-        this.presentToast('Cannot find todo item');
+        this.toastService.toast('Cannot find todo item');
         this.navCtrl.navigateRoot('/todo');
       }
     }
-  }
-
-  async presentToast(message: string) {
-    const toast = await this.toastController.create({
-      message,
-      duration: 1500,
-      position: 'top',
-      color: 'dark',
-    });
-    toast.present();
   }
 
   submit() {
@@ -81,23 +72,23 @@ export class TodoDetailPage implements OnInit {
         this.todoService.update(this.id, this.itemForm.value).subscribe(
           (result) => {
             if (result) {
-              this.presentToast('Todo item was updated');
+              this.toastService.toast('Todo item was updated');
               this.item  = result;
             } else {
-              this.presentToast('Todo item was NOT updated');
+              this.toastService.toast('Todo item was NOT updated');
             }
           }
         );
       } else {
         this.todoService.add(this.itemForm.value).subscribe(
           (result) => {
-            this.presentToast('A new todo item was added');
+            this.toastService.toast('A new todo item was added');
             this.navCtrl.navigateRoot('/todo');
           }
         );
       }
     } else {
-      this.presentToast('You forgot some required fields!');
+      this.toastService.toast('You forgot some required fields!');
     }
   }
 

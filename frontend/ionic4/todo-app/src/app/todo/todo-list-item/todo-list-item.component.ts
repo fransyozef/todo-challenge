@@ -1,8 +1,8 @@
+import { ToastService } from './../../_shared/toast.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { TodoItemModel } from '../_models/todo-item.interface';
 import { AlertController } from '@ionic/angular';
 import { TodoService } from '../_services/todo.service';
-import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-todo-list-item',
@@ -20,7 +20,7 @@ export class TodoListItemComponent implements OnInit {
   constructor(
     public alertController: AlertController,
     private todoService: TodoService,
-    public toastController: ToastController,
+    private toastService: ToastService,
   ) { }
 
   ngOnInit() {
@@ -37,22 +37,12 @@ export class TodoListItemComponent implements OnInit {
     this.todoService.delete(this.item.id).subscribe(
       (result) => {
         if (result === true) {
-          this.presentToast('Item was deleted');
+          this.toastService.toast('Item was deleted');
         } else {
-          this.presentToast('Item was NOT deleted');
+          this.toastService.toast('Item was NOT deleted');
         }
       }
     );
-  }
-
-  async presentToast(message: string) {
-    const toast = await this.toastController.create({
-      message,
-      duration: 1500,
-      position: 'top',
-      color: 'dark',
-    });
-    toast.present();
   }
 
   async presentAlertConfirm() {
@@ -94,9 +84,9 @@ export class TodoListItemComponent implements OnInit {
           this.disabled = false;
 
           if (result) {
-            this.presentToast('changed completed status');
+            this.toastService.toast('changed completed status');
           } else {
-            this.presentToast('failed to change completed status');
+            this.toastService.toast('failed to change completed status');
           }
 
           setTimeout(() => {

@@ -1,13 +1,15 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
-import { Platform, AlertController } from '@ionic/angular';
+import { Platform, AlertController, ToastController } from '@ionic/angular';
 
 import { TodoService } from './todo/_services/todo.service';
 
 import { get, set } from 'idb-keyval';
-import { ToastController } from '@ionic/angular';
 import { SwUpdate } from '@angular/service-worker';
 import { AngularPageVisibilityService, AngularPageVisibilityStateEnum } from 'angular-page-visibility';
+import { ToastService } from './_shared/toast.service';
+import { ToastInterface } from './_shared/toast.interface';
+import { ToastOptions } from '@ionic/core';
 
 @Component({
   selector: 'app-root',
@@ -29,6 +31,8 @@ export class AppComponent implements OnInit {
 
   onPageVisibleSubscription: Subscription;
 
+  toastSubscription: Subscription;
+
   isIos = () => {
     const userAgent = window.navigator.userAgent.toLowerCase();
     return /iphone|ipad|ipod/.test(userAgent);
@@ -44,6 +48,7 @@ export class AppComponent implements OnInit {
     private swUpdate: SwUpdate,
     private alertController: AlertController,
     private angularPageVisibilityService: AngularPageVisibilityService,
+    private toastService: ToastService,
   ) { }
 
   initializeApp() {
@@ -52,7 +57,24 @@ export class AppComponent implements OnInit {
       this.showIosInstallBanner();
       this.checkUpdate();
       this.initPageVisibility();
+
+      this.initToast();
     });
+  }
+
+  initToast() {
+    this.toastService.toast$.subscribe(
+      (payload) => {
+        if(payload !== null) {
+          this.presentToast(payload);
+        }
+      }
+    );
+  }
+
+  async presentToast(payload: ToastOptions) {
+    const toast = await this.toastController.create(payload);
+    toast.present();
   }
 
   initPageVisibility() {

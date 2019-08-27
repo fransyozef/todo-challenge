@@ -17,6 +17,7 @@ import { TodoService } from './todo/_services/todo.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { AngularPageVisibilityModule } from 'angular-page-visibility';
+import { ToastService } from './_shared/toast.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,6 +43,7 @@ import { AngularPageVisibilityModule } from 'angular-page-visibility';
       multi: true
     },
     TodoService,
+    ToastService,
   ],
   bootstrap: [AppComponent]
 })

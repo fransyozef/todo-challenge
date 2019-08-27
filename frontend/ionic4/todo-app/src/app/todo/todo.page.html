@@ -10,7 +10,7 @@
     </ion-title>
 
     <ion-buttons slot="end">
-      <ion-button (click)="refresh()" [disabled]="isLoading$ | async">
+      <ion-button (click)="refresh()">
         <ion-icon slot="icon-only" name="refresh"></ion-icon>
       </ion-button>
       <ion-button routerLink="/todo/new" routerDirection="forward">
@@ -22,10 +22,6 @@
 </ion-header>
 
 <ion-content>
-
-  <ion-progress-bar type="indeterminate" *ngIf="isLoading$ | async as isLoading"></ion-progress-bar>
-
-  <br>
 
   <ion-card  *ngIf="!(isLoading$ | async) && (items$ | async).length == 0">
     <ion-card-header>
@@ -43,7 +39,7 @@
 </ion-content>
 
 <ion-footer padding>
-  <ion-segment (ionChange)="segmentChanged($event)" [disabled]="(isLoading$ | async) || (items$ | async).length == 0">
+  <ion-segment (ionChange)="segmentChanged($event)" [disabled]="(items$ | async).length == 0">
     <ion-segment-button value="all" checked>
       <ion-label>All</ion-label>
     </ion-segment-button>

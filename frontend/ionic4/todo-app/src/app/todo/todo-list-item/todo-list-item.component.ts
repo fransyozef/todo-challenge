@@ -1,3 +1,4 @@
+import { LoaderService } from './../../_shared/loader.service';
 import { ToastService } from './../../_shared/toast.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { TodoItemModel } from '../_models/todo-item.interface';
@@ -21,6 +22,7 @@ export class TodoListItemComponent implements OnInit {
     public alertController: AlertController,
     private todoService: TodoService,
     private toastService: ToastService,
+    private loaderService: LoaderService,
   ) { }
 
   ngOnInit() {
@@ -34,8 +36,10 @@ export class TodoListItemComponent implements OnInit {
   }
 
   handleDelete() {
+    this.loaderService.show();
     this.todoService.delete(this.item.id).subscribe(
       (result) => {
+        this.loaderService.hide();
         if (result === true) {
           this.toastService.toast('Item was deleted');
         } else {
@@ -71,9 +75,10 @@ export class TodoListItemComponent implements OnInit {
 
     if (this.canToggle === true) {
       this.disabled = true;
+      this.loaderService.show();
       this.todoService.update(this.item.id, { completed: this.completeStatus }).subscribe(
         (result) => {
-
+          this.loaderService.hide();
           this.item.completed = result ? this.completeStatus : !this.completeStatus;
 
           this.canToggle = false;

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, Subject, throwError, of , BehaviorSubject} from 'rxjs';
 import { TodoService } from './_services/todo.service';
 import { TodoItemModel } from './_models/todo-item.interface';
+import { LoaderService } from '../_shared/loader.service';
 
 @Component({
   selector: 'app-todo',
@@ -18,6 +19,7 @@ export class TodoPage implements OnInit {
 
   constructor(
     private todoService: TodoService,
+    private loaderService: LoaderService,
   ) { }
 
   ngOnInit() {
@@ -28,7 +30,12 @@ export class TodoPage implements OnInit {
   }
 
   refresh() {
-    this.todoService.fetch().subscribe();
+    this.loaderService.show();
+    this.todoService.fetch().subscribe(
+      () => {
+        this.loaderService.hide();
+      }
+    );
   }
 
   segmentChanged($event) { 

@@ -1,3 +1,4 @@
+import { LoaderService } from './../../_shared/loader.service';
 import { ToastService } from './../../_shared/toast.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -26,6 +27,7 @@ export class TodoDetailPage implements OnInit {
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private toastService: ToastService,
+    private loaderService: LoaderService,
   ) {
     this.showForm  = false;
     this.pageTitle = 'Add todo item';
@@ -68,9 +70,11 @@ export class TodoDetailPage implements OnInit {
 
   submit() {
     if (this.itemForm.valid) {
+      this.loaderService.show();
       if (this.item) {
         this.todoService.update(this.id, this.itemForm.value).subscribe(
           (result) => {
+            this.loaderService.hide();
             if (result) {
               this.toastService.toast('Todo item was updated');
               this.item  = result;
@@ -82,6 +86,7 @@ export class TodoDetailPage implements OnInit {
       } else {
         this.todoService.add(this.itemForm.value).subscribe(
           (result) => {
+            this.loaderService.hide();
             this.toastService.toast('A new todo item was added');
             this.navCtrl.navigateRoot('/todo');
           }

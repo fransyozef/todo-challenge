@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
-import { Platform, AlertController, ToastController } from '@ionic/angular';
+import { Platform, AlertController, ToastController, LoadingController } from '@ionic/angular';
 
 import { TodoService } from './todo/_services/todo.service';
 
@@ -9,7 +9,8 @@ import { SwUpdate } from '@angular/service-worker';
 import { AngularPageVisibilityService, AngularPageVisibilityStateEnum } from 'angular-page-visibility';
 import { ToastService } from './_shared/toast.service';
 import { ToastInterface } from './_shared/toast.interface';
-import { ToastOptions } from '@ionic/core';
+import { ToastOptions, LoadingOptions } from '@ionic/core';
+import { LoaderService } from './_shared/loader.service';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +34,8 @@ export class AppComponent implements OnInit {
 
   toastSubscription: Subscription;
 
+  loading: any;
+
   isIos = () => {
     const userAgent = window.navigator.userAgent.toLowerCase();
     return /iphone|ipad|ipod/.test(userAgent);
@@ -49,17 +52,53 @@ export class AppComponent implements OnInit {
     private alertController: AlertController,
     private angularPageVisibilityService: AngularPageVisibilityService,
     private toastService: ToastService,
+    private loaderService: LoaderService,
+    public loadingController: LoadingController,
   ) { }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.todoService.fetch().subscribe();
+
+      this.fetchData();
       this.showIosInstallBanner();
       this.checkUpdate();
       this.initPageVisibility();
 
       this.initToast();
+      this.initLoader();
     });
+  }
+
+  fetchData() {
+    this.loaderService.show();
+    this.todoService.fetch().subscribe(
+      () => {
+        this.loaderService.hide();
+      }
+    );
+  }
+
+  initLoader() {
+    this.loaderService.loader$.subscribe(
+      (payload) => {
+        if(payload !== null) {
+          this.presentLoader(payload);
+        }
+      }
+    );
+
+    this.loaderService.loaderHide$.subscribe(
+      () => {
+        if (this.loading) {
+          this.loading.dismiss();
+        }
+      }
+    );
+  }
+
+  async presentLoader(payload?: LoadingOptions) {
+    this.loading =  await this.loadingController.create(payload);
+    await this.loading.present();
   }
 
   initToast() {

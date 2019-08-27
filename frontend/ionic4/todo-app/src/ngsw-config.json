@@ -1,8 +1,8 @@
 {
   "index": "/index.html",
   "appData": {
-    "version": "0.0.31",
-    "changelog": "Refactor Toast"
+    "version": "0.0.32",
+    "changelog": "Add modal loader"
   },
   "assetGroups": [
     {

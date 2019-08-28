@@ -1,3 +1,4 @@
+import { PwaNetworkService } from './../../_shared/pwa-network.service';
 import { LoaderService } from './../../_shared/loader.service';
 import { ToastService } from './../../_shared/toast.service';
 import { Component, OnInit } from '@angular/core';
@@ -6,6 +7,7 @@ import { TodoItemModel } from '../_models/todo-item.interface';
 import { TodoService } from '../_services/todo.service';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-todo-detail',
@@ -22,16 +24,21 @@ export class TodoDetailPage implements OnInit {
   id: string;
   showForm: boolean;
 
+  online$: BehaviorSubject<boolean>;
+
   constructor(
     private todoService: TodoService,
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private toastService: ToastService,
     private loaderService: LoaderService,
+    private pwaNetworkService: PwaNetworkService,
   ) {
     this.showForm  = false;
     this.pageTitle = 'Add todo item';
     this.buttonText  = 'Add';
+
+    this.online$  = this.pwaNetworkService.online$;
   }
 
   ngOnInit() {

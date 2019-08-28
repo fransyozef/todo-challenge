@@ -19,6 +19,7 @@ import { environment } from '../environments/environment';
 import { AngularPageVisibilityModule } from 'angular-page-visibility';
 import { ToastService } from './_shared/toast.service';
 import { LoaderService } from './_shared/loader.service';
+import { PwaNetworkService } from './_shared/pwa-network.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -46,6 +47,7 @@ import { LoaderService } from './_shared/loader.service';
     TodoService,
     ToastService,
     LoaderService,
+    PwaNetworkService,
   ],
   bootstrap: [AppComponent]
 })

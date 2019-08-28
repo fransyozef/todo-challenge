@@ -1,8 +1,8 @@
 {
   "index": "/index.html",
   "appData": {
-    "version": "0.0.33",
-    "changelog": "Added The Hangry Coder Instagram"
+    "version": "0.0.34",
+    "changelog": "Detecting network online/offline change"
   },
   "assetGroups": [
     {

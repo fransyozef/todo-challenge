@@ -4,9 +4,9 @@
     {{item.title}}
   </ion-label>
 
-  <ion-toggle slot="start" (ionChange)='toggleChange($event)' [(ngModel)]="completeStatus" [checked]="item.completed"></ion-toggle>
+  <ion-toggle slot="start" (ionChange)='toggleChange($event)' [(ngModel)]="completeStatus" [checked]="item.completed" [disabled]="!(online$ | async)"></ion-toggle>
 
-  <ion-button fill="clear" slot="end" (click)="delete()">
+  <ion-button fill="clear" slot="end" (click)="delete()" [disabled]="!(online$ | async)">
     <ion-icon slot="icon-only" name="trash" color="danger"></ion-icon>
   </ion-button>
 

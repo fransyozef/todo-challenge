@@ -30,6 +30,6 @@
 
 <ion-footer>
   <div class="ion-padding">
-    <ion-button *ngIf="showForm" expand="block" type="submit" class="ion-no-margin" (click)="submit()" [disabled]="!itemForm.valid">{{ buttonText }}</ion-button>
+    <ion-button *ngIf="showForm" expand="block" type="submit" class="ion-no-margin" (click)="submit()" [disabled]="!itemForm.valid || !(online$ | async)">{{ buttonText }}</ion-button>
   </div>
 </ion-footer>

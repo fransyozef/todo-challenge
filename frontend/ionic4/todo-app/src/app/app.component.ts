@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { Platform, AlertController, ToastController, LoadingController } from '@ionic/angular';
 
@@ -11,6 +11,7 @@ import { ToastService } from './_shared/toast.service';
 import { ToastInterface } from './_shared/toast.interface';
 import { ToastOptions, LoadingOptions } from '@ionic/core';
 import { LoaderService } from './_shared/loader.service';
+import { PwaNetworkService } from './_shared/pwa-network.service';
 
 @Component({
   selector: 'app-root',
@@ -36,6 +37,10 @@ export class AppComponent implements OnInit {
 
   loading: any;
 
+  online$: Subscription;
+
+  toast: any;
+
   isIos = () => {
     const userAgent = window.navigator.userAgent.toLowerCase();
     return /iphone|ipad|ipod/.test(userAgent);
@@ -54,6 +59,7 @@ export class AppComponent implements OnInit {
     private toastService: ToastService,
     private loaderService: LoaderService,
     public loadingController: LoadingController,
+    private pwaNetworkService: PwaNetworkService,
   ) { }
 
   initializeApp() {
@@ -66,6 +72,7 @@ export class AppComponent implements OnInit {
 
       this.initToast();
       this.initLoader();
+      this.initNetworkChange();
     });
   }
 
@@ -112,8 +119,8 @@ export class AppComponent implements OnInit {
   }
 
   async presentToast(payload: ToastOptions) {
-    const toast = await this.toastController.create(payload);
-    toast.present();
+    this.toast = await this.toastController.create(payload);
+    this.toast.present();
   }
 
   initPageVisibility() {
@@ -129,7 +136,7 @@ export class AppComponent implements OnInit {
             status = 'VISIBLE';
             localStorage.setItem('visibility', status);
             if (visibility === 'HIDDEN') {
-              this.swUpdate.checkForUpdate();
+              this.onAppStarted();
             }
             break;
           }
@@ -141,6 +148,30 @@ export class AppComponent implements OnInit {
         }
       });
     }
+  }
+
+  initNetworkChange() {
+    this.online$ = this.pwaNetworkService.online$.subscribe(
+      (value) => {
+        if (!value) {
+          this.presentToast({
+            message: 'You are offline!',
+            showCloseButton: true,
+            position: 'top',
+            color: 'danger'
+          });
+        } else {
+          if (this.toast) {
+            this.toast.dismiss();
+          }
+        }
+      }
+    );
+  }
+
+  onAppStarted() {
+    this.swUpdate.checkForUpdate();
+    this.pwaNetworkService.handleNetworkChange();
   }
 
   async showIosInstallBanner() {

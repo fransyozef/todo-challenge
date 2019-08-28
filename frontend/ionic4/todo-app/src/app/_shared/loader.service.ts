@@ -15,7 +15,8 @@ export class LoaderService {
   show(payload?: string | LoadingOptions) {
 
     let newPayload: LoadingOptions = {
-      message: ''
+      message: '',
+      duration: 5000
     };
 
     if (typeof(payload) === 'string') {

@@ -1,9 +1,11 @@
+import { PwaNetworkService } from './../../_shared/pwa-network.service';
 import { LoaderService } from './../../_shared/loader.service';
 import { ToastService } from './../../_shared/toast.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { TodoItemModel } from '../_models/todo-item.interface';
 import { AlertController } from '@ionic/angular';
 import { TodoService } from '../_services/todo.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-todo-list-item',
@@ -18,12 +20,17 @@ export class TodoListItemComponent implements OnInit {
   canToggle: boolean;
   disabled: boolean;
 
+  online$: BehaviorSubject<boolean>;
+
   constructor(
     public alertController: AlertController,
     private todoService: TodoService,
     private toastService: ToastService,
     private loaderService: LoaderService,
-  ) { }
+    private pwaNetworkService: PwaNetworkService,
+  ) { 
+    this.online$  = this.pwaNetworkService.online$;
+  }
 
   ngOnInit() {
     this.completeStatus = this.item.completed;

@@ -3,6 +3,7 @@ import { Observable, Subject, throwError, of , BehaviorSubject} from 'rxjs';
 import { TodoService } from './_services/todo.service';
 import { TodoItemModel } from './_models/todo-item.interface';
 import { LoaderService } from '../_shared/loader.service';
+import { PwaNetworkService } from '../_shared/pwa-network.service';
 
 @Component({
   selector: 'app-todo',
@@ -17,9 +18,12 @@ export class TodoPage implements OnInit {
 
   filterStatus: string;
 
+  online$: BehaviorSubject<boolean>;
+
   constructor(
     private todoService: TodoService,
     private loaderService: LoaderService,
+    private pwaNetworkService: PwaNetworkService
   ) { }
 
   ngOnInit() {
@@ -27,6 +31,7 @@ export class TodoPage implements OnInit {
 
     this.items$  = this.todoService.items$;
     this.isLoading$  = this.todoService.isLoading$;
+    this.online$  = this.pwaNetworkService.online$;
   }
 
   refresh() {

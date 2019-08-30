@@ -1,3 +1,4 @@
+import { PwaNetworkService } from './../../_shared/pwa-network.service';
 import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
@@ -17,6 +18,7 @@ export class TodoService {
 
   constructor(
     private http: HttpClient,
+    private pwaNetworkService: PwaNetworkService,
   ) { }
 
   // clear the local service
@@ -68,13 +70,16 @@ export class TodoService {
   // update an item on server
   update(id: string, payload: TodoItemModel | TodoItemCompletedModel): Observable<any> {
 
+    if (this.pwaNetworkService.isOnline() === false) {
+      return of(false);
+    }
+
     // tslint:disable-next-line:no-string-literal
     if (payload['id']) {
       // tslint:disable-next-line:no-string-literal
       delete payload['id'];
     }
 
-    this.startLoading();
     // tslint:disable-next-line:no-string-literal
     return this.http.put(`${environment['apiBaseUrl']}todo/${id}` , payload)
       .pipe(
@@ -87,10 +92,8 @@ export class TodoService {
             result.id  = id;
             this.updateLocalItem(id , result);
           }
-        }), // when success, delete the item from the local service
-        tap(_ => { this.stopLoading(); } ),
+        }),
         catchError((err) => {
-          this.stopLoading();
           return of(false);
         }),
       );
@@ -98,6 +101,10 @@ export class TodoService {
 
   // fetch all the items from the server
   fetch(): Observable<any> {
+
+    if (this.pwaNetworkService.isOnline() === false) {
+      return of(false);
+    }
 
     this.clear();
     this.startLoading();
@@ -119,7 +126,11 @@ export class TodoService {
 
   // delete an item
   delete(id: string): Observable<any> {
-    this.startLoading();
+
+    if (this.pwaNetworkService.isOnline() === false) {
+      return of(false);
+    }
+
     // tslint:disable-next-line:no-string-literal
     return this.http.delete(`${environment['apiBaseUrl']}todo/${id}`)
       .pipe(
@@ -128,9 +139,7 @@ export class TodoService {
           return (data['success'] && data['success'] === true) ? true : false;
         }),
         tap((success) => { if (success) { this.deleteItem(id); } }), // when success, delete the item from the local service
-        tap(_ => { this.stopLoading(); } ),
         catchError((err) => {
-          this.stopLoading();
           return of(false);
         }),
       );
@@ -175,14 +184,15 @@ export class TodoService {
 
   // add an item into database
   add(payload: any): Observable<any> {
-    this.startLoading();
+    if (this.pwaNetworkService.isOnline() === false) {
+      return of(false);
+    }
     // tslint:disable-next-line:no-string-literal
     return this.http.post(`${environment['apiBaseUrl']}todo/` , payload)
       .pipe(
         map(data => {
           // tslint:disable-next-line:no-string-literal
           return (data['success'] && data['success'] === true) ? data['result'] : false;
-          return data;
         }),
         tap((result) => {
           if (result) {
@@ -191,9 +201,7 @@ export class TodoService {
             this.items$.next(items);
           }
         }),
-        tap(_ => { this.stopLoading(); } ),
         catchError((err) => {
-          this.stopLoading();
           return of(false);
         }),
       );

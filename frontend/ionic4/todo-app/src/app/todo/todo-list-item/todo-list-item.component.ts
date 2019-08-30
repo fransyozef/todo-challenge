@@ -28,8 +28,8 @@ export class TodoListItemComponent implements OnInit {
     private toastService: ToastService,
     private loaderService: LoaderService,
     private pwaNetworkService: PwaNetworkService,
-  ) { 
-    this.online$  = this.pwaNetworkService.online$;
+  ) {
+    this.online$ = this.pwaNetworkService.online$;
   }
 
   ngOnInit() {
@@ -82,28 +82,39 @@ export class TodoListItemComponent implements OnInit {
 
     if (this.canToggle === true) {
       this.disabled = true;
-      this.loaderService.show();
+      if (this.pwaNetworkService.isOnline()) { this.loaderService.show(); }
       this.todoService.update(this.item.id, { completed: this.completeStatus }).subscribe(
         (result) => {
-          this.loaderService.hide();
-          this.item.completed = result ? this.completeStatus : !this.completeStatus;
-
-          this.canToggle = false;
-
-          this.todoService.updateItem(this.item.id, this.item);
-
-          this.completeStatus = this.item.completed;
-          this.disabled = false;
-
-          if (result) {
-            this.toastService.toast('changed completed status');
-          } else {
-            this.toastService.toast('failed to change completed status');
-          }
 
           setTimeout(() => {
-            this.canToggle = true;
-          }, 1000);
+
+            this.loaderService.hide();
+            this.item.completed = result ? this.completeStatus : !this.completeStatus;
+
+            this.canToggle = false;
+
+            this.todoService.updateItem(this.item.id, this.item);
+
+            this.completeStatus = this.item.completed;
+            this.disabled = false;
+
+            if (result) {
+              this.toastService.toast('changed completed status');
+            } else {
+              if (!this.pwaNetworkService.isOnline()) {
+                this.toastService.toast('you are not online!');
+              } else {
+                this.toastService.toast('failed to change completed status');
+              }
+            }
+
+            setTimeout(() => {
+              this.canToggle = true;
+            }, 500);
+
+          }, 300);
+
+
         }
       );
     } else {

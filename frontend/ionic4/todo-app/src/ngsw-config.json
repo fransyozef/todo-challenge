@@ -1,8 +1,8 @@
 {
   "index": "/index.html",
   "appData": {
-    "version": "0.0.34",
-    "changelog": "Detecting network online/offline change"
+    "version": "0.0.35",
+    "changelog": "Can go to detail page when in offline mode"
   },
   "assetGroups": [
     {

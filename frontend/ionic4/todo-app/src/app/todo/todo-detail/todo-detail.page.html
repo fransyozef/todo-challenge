@@ -13,6 +13,9 @@
   <form [formGroup]="itemForm" *ngIf="showForm">
 
     <ion-list lines="full" class="ion-no-margin ion-no-padding">
+      <ion-item text-wrap>
+        <h1>{{ item.title}} </h1>
+      </ion-item>
       <ion-item>
         <ion-label position="fixed">Title <ion-text color="danger">*</ion-text>
         </ion-label>
@@ -30,6 +33,7 @@
 
 <ion-footer>
   <div class="ion-padding">
-    <ion-button *ngIf="showForm" expand="block" type="submit" class="ion-no-margin" (click)="submit()" [disabled]="!itemForm.valid || !(online$ | async)">{{ buttonText }}</ion-button>
+    <ion-button *ngIf="showForm" expand="block" type="submit" class="ion-no-margin" (click)="submit()"
+      [disabled]="!itemForm.valid || !(online$ | async)">{{ buttonText }}</ion-button>
   </div>
 </ion-footer>

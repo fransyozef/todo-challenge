@@ -1,8 +1,8 @@
 {
   "index": "/index.html",
   "appData": {
-    "version": "0.0.35",
-    "changelog": "Can go to detail page when in offline mode"
+    "version": "0.0.36",
+    "changelog": "Wrap long title in detail page"
   },
   "assetGroups": [
     {

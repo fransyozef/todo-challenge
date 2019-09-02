@@ -33,15 +33,14 @@ export class TodoDetailPage implements OnInit {
     private toastService: ToastService,
     private loaderService: LoaderService,
     private pwaNetworkService: PwaNetworkService,
-  ) {
-    this.showForm  = false;
-    this.pageTitle = 'Add todo item';
-    this.buttonText  = 'Add';
-
-    this.online$  = this.pwaNetworkService.online$;
-  }
+  ) { }
 
   ngOnInit() {
+    this.showForm  = false;
+    this.pageTitle = 'Add todo item';
+
+    this.online$  = this.pwaNetworkService.online$;
+    this.buttonText  = 'Add';
     this.resolveRoute();
   }
 
@@ -55,6 +54,7 @@ export class TodoDetailPage implements OnInit {
         this.getItem();
       } else {
         // this.handleItemNotFound();
+        
         this.initForm();
       }
     });

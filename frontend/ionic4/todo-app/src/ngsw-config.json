@@ -1,8 +1,8 @@
 {
   "index": "/index.html",
   "appData": {
-    "version": "0.0.36",
-    "changelog": "Wrap long title in detail page"
+    "version": "0.0.37",
+    "changelog": "Bugfix detail page"
   },
   "assetGroups": [
     {

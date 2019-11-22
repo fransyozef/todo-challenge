@@ -7,7 +7,7 @@ For more information, please read the [Medium](https://medium.com/@fransyozef/th
 This repository holds the backend and frontend(s) sources. But each platform has each own build/deployment.
 
 ## Backend
-The backend is build with the [Nest](https://nestjs.com/) framework wich is build on [NodeJS](https://nodejs.org/).
+The backend is build with the [Nest](https://nestjs.com/) framework wich is build on [NodeJS](https://nodejs.org/). Read this [Readme](backend/nestjs/todo/README.md) on installing and running the application.
 
 ## Frontend
 Currently the following frontend frameworks are supported

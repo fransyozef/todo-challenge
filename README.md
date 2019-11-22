@@ -12,4 +12,4 @@ The backend is build with the [Nest](https://nestjs.com/) framework wich is buil
 ## Frontend
 Currently the following frontend frameworks are supported
 
-  - [IONIC](https://ionicframework.com/) with [Angular](https://angular.io/)
+  - [IONIC](https://ionicframework.com/) with [Angular](https://angular.io/). Read this [Readme](frontend/ionic4/todo-app/README.md) on installing and running the application.
